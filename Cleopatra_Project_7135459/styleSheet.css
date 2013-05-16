@@ -1,0 +1,24 @@
+
+#entryBox {				
+	padding: 15px;
+	height: 105%;
+	width: 680px;
+	border: solid #3D107B;
+	border-width: 1px;
+	background: #BEDFC4;
+}
+
+h1 {						
+	color: #6F0039;
+}
+
+p#start {					
+	margin-left: 10%;
+	margin-bottom: 115px;
+}
+
+p#prompt {					
+	padding-left: 20px;
+	margin-top: 10px;
+	margin-bottom: 80px;
+}

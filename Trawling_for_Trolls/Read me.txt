@@ -1,0 +1,4 @@
+This was just something I threw together over a
+couple of days. Just to test Javascript knowledge.
+I want to add more animations and better game 
+controls, but doubt I will get around to it.
