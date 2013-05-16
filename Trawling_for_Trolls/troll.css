@@ -1,0 +1,53 @@
+#entryBox {				
+	height: 10%;
+	width: 600px;
+	border: 1px solid #3D107B;
+	background-color: #BEDFC4;
+   margin: auto;
+}
+
+#high {
+   padding-left: 30px;
+   padding-right: 30px;
+   width: 140px;
+   color: maroon;
+   border: 1px solid black;
+   margin: 10px;
+   background-color: white;
+}
+
+h2 {						
+	color: #6F0039;
+   text-align: center;
+}
+
+.sprite {
+   width: 250px;
+   height: 250px;
+   background-color: #FEF1E1;
+   border: 1px solid maroon;
+   margin: 5px;
+}
+
+input {
+   margin: 10px;
+}
+
+img {
+   width: 250px;
+   height: 250px;
+}
+
+#bground {
+   background-color: #FEF1E1;
+   border: 2px solid black;
+   margin: 20px;
+   height: 100%;
+   padding-bottom: 50px;
+}
+
+#prompt {					
+	padding-left: 20px;
+	margin-top: 10px;
+	margin-bottom: 80px;
+}

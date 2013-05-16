@@ -1,0 +1,41 @@
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link type="text/css" rel="stylesheet" href="troll.css" />
+    <script src="jquery.js"></script>  
+    <script src="script.js"></script>
+    <script src="character.js"></script>
+    <title>Trawling for Trolls</title>
+  </head>
+  <body>
+  <div id="bground">
+    <h2>Welcome to trawling for trolls</h2>
+   <form name="form1">
+	<fieldset id="entryBox">
+		<p class="prompt">
+			Player name:
+			<input type="text" id="playerName" size="10" maxlength="10" value="Player"/>
+		<!--Button declared and created-->
+		<p class="prompt">
+         <input type="radio" value="Dwarf" name="character" />Dwarf
+         <input type="radio" value="Barbarian" name="character" checked="checked" />Barbarian
+			<input type="button" value="Begin Game" id="gameBegin" />
+		</p>
+		<!--Text area to display objects used and statistics-->
+      <div id="screen">
+		<div class="sprite"; style="float:left"><div id="character"></div></div>
+      <div class="sprite"; style="float:right"><div id="eventImage"></div></div>
+		<textarea rows="4" cols="72" name="textarea3"></textarea>
+      <input type="button" id="proceed" value="Proceed" />
+      <input type="button" id="reset" value="Reset" />
+      </div>
+	</fieldset>
+	</form>
+   </div>
+  </body>
+
+</html>
+
+
