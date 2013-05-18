@@ -6,6 +6,38 @@ Purpose: This program will create the logic for the board game resembling snakes
 in a format to test playability of game.
 */
 
+function makeBoard() {
+   //get the canvas
+   var canvas = document.getElementById("canvas");
+   //give the canvas a width and a height
+   canvas.width = 500;
+   canvas.height = 400;
+   //get a 2d context of the canvas
+   var x = 0;
+   var y = 0;
+   var context = canvas.getContext("2d");
+   for (var i = 0; i < 10; i++) {
+      for (var j = 0; j < 10; j++) {
+         if (j % 2 == 0 && i % 2 != 0) {
+            context.fillStyle = 'grey';
+            context.fillRect(x,y,50,50);
+         }
+         else if (j % 2 != 0 && i % 2 == 0) {
+            context.fillStyle = 'grey';
+            context.fillRect(x,y,50,50);
+         }
+         else {
+            context.fillStyle = 'white';
+            context.fillRect(x,y,50,50);
+         }
+         x += 50;
+      }
+      x = 0;
+      y += 50;
+   }
+}
+
+
 //Function to change amount of times game played.
 function times_onchange()
 {

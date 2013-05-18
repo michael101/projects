@@ -1,6 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!DOCTYPE html>
+<html>
 <head>
 <!--Name: ABGL Cleopatra project
 Author: Michael Harley
@@ -16,10 +15,15 @@ in a format to test playability of game and gather statistics.-->
 	<script type="text/javascript" src="gameStart.js"></script>
 </head> 
 <!--Form components declared and default value for times is set, button types created-->
-<body onload="document.form1.times.value = 1000">
+<body onload="makeBoard()">
 	<form name="form1">
 	<fieldset id="entryBox">
 		<h1>Cleopatra Project</h1>
+      <div id="textwindows">
+         <textarea rows="16" cols="36" name="textarea1"></textarea>
+         <textarea rows="16" cols="36" name="textarea2"></textarea>
+         <textarea rows="4" cols="76" name="textarea3"></textarea>
+      </div>
 		<!--User input for game board ID and times played-->
 		<p id="prompt">
 			Board code:
@@ -27,17 +31,13 @@ in a format to test playability of game and gather statistics.-->
 			<br />
 			Times to play:
 			<input type="text" name="times" onchange="times_onchange()" size="4" value="1000" />
-			<br />
-		</p>
+      </p>
+      <canvas id="canvas" ></canvas>
 		<!--Button declared and created-->
 		<p id="start">
 			<input type="button" value="Create Game" name="gameBegin"
 			onclick="createGame_onclick()" /><input type="Reset" value="Reset" />
 		</p>
-		<!--Text area to display objects used and statistics-->
-		<textarea rows="16" cols="36" name="textarea1"></textarea>
-		<textarea rows="16" cols="36" name="textarea2"></textarea>
-		<textarea rows="4" cols="76" name="textarea3"></textarea>
 	</fieldset>
 	</form>
 </body>

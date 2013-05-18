@@ -2,23 +2,34 @@
 #entryBox {				
 	padding: 15px;
 	height: 105%;
-	width: 680px;
+	width: 1150px;
 	border: solid #3D107B;
 	border-width: 1px;
 	background: #BEDFC4;
+}
+
+#textwindows{
+   float: right;
+   position: absolute;
+   margin-left: 520px;
+   margin-top: 90px;
 }
 
 h1 {						
 	color: #6F0039;
 }
 
-p#start {					
+#start {					
 	margin-left: 10%;
-	margin-bottom: 115px;
 }
 
-p#prompt {					
+#prompt {					
 	padding-left: 20px;
 	margin-top: 10px;
-	margin-bottom: 80px;
+}
+
+canvas {
+    border-width: 2px;
+    border-color: #999;
+    border-style: solid;
 }
