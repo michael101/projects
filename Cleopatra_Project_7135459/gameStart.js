@@ -53,8 +53,11 @@ function Square(num, newColor, x, y, context){
 }         
 
 function fillBoard(squares) {
-   for (var i = 0; i < squares.length; i++) {
-      squares[i++].drawSquare();
+   var index = 0;
+   for (var i = 0; i < 8; i++) {
+      for (var j = 0; j < 10; j++) {
+         squares[index++].drawSquare();
+      }
    }
 }
 
