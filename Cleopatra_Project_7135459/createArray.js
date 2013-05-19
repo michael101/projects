@@ -11,7 +11,7 @@ function createArray()
 	//Variables and array specifics created.
 	var title = 0;                   var square = 1;         
 	var set = 0;                     var index = 0;
-	var gameBoard = new Array(100);     
+	var gameBoard = new Array(80);     
    var limit = gameBoard.length-2;      
    var quit = gameBoard.length;
 	//Creating window headings for objects.

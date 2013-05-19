@@ -6,6 +6,8 @@ Purpose: This program will create the logic for the board game resembling snakes
 in a format to test playability of game.
 */
 
+
+
 function makeBoard() {
    //get the canvas
    var canvas = document.getElementById("canvas");
@@ -13,29 +15,50 @@ function makeBoard() {
    canvas.width = 500;
    canvas.height = 400;
    //get a 2d context of the canvas
+   var context = canvas.getContext("2d");
+   var squares = [];
    var x = 0;
    var y = 0;
-   var context = canvas.getContext("2d");
-   for (var i = 0; i < 10; i++) {
+   
+   for (var i = 0; i < 8; i++) {
       for (var j = 0; j < 10; j++) {
          if (j % 2 == 0 && i % 2 != 0) {
-            context.fillStyle = 'grey';
-            context.fillRect(x,y,50,50);
+            squares.push(new Square(j, "grey", x, y, context));
          }
          else if (j % 2 != 0 && i % 2 == 0) {
-            context.fillStyle = 'grey';
-            context.fillRect(x,y,50,50);
+            squares.push(new Square(j, "grey", x, y, context));
          }
          else {
-            context.fillStyle = 'white';
-            context.fillRect(x,y,50,50);
+            squares.push(new Square(j, "white", x, y, context));
          }
          x += 50;
       }
       x = 0;
       y += 50;
    }
+   fillBoard(squares);
 }
+
+function Square(num, newColor, x, y, context){
+   this.index = num;
+   this.color = newColor;
+   this.x = x;
+   this.y = y;
+   this.context = context;
+   
+   this.drawSquare = function() {
+      context.fillStyle = this.color;
+      context.fillRect(this.x, this.y, 50,50);
+   }
+}         
+
+function fillBoard(squares) {
+   for (var i = 0; i < squares.length; i++) {
+      squares[i++].drawSquare();
+   }
+}
+
+
 
 
 //Function to change amount of times game played.
