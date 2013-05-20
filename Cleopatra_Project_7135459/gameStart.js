@@ -6,7 +6,7 @@ Purpose: This program will create the logic for the board game resembling snakes
 in a format to test playability of game.
 */
 
-
+var squares = [];
 
 function makeBoard() {
    //get the canvas
@@ -16,22 +16,24 @@ function makeBoard() {
    canvas.height = 400;
    //get a 2d context of the canvas
    var context = canvas.getContext("2d");
-   var squares = [];
+   
    var x = 0;
    var y = 0;
+   var num = 0;
    
    for (var i = 0; i < 8; i++) {
       for (var j = 0; j < 10; j++) {
          if (j % 2 == 0 && i % 2 != 0) {
-            squares.push(new Square(j, "grey", x, y, context));
+            squares.push(new Square(num, "grey", x, y, context));
          }
          else if (j % 2 != 0 && i % 2 == 0) {
-            squares.push(new Square(j, "grey", x, y, context));
+            squares.push(new Square(num, "grey", x, y, context));
          }
          else {
-            squares.push(new Square(j, "white", x, y, context));
+            squares.push(new Square(num, "white", x, y, context));
          }
          x += 50;
+         num++;
       }
       x = 0;
       y += 50;
@@ -39,6 +41,7 @@ function makeBoard() {
    fillBoard(squares);
 }
 
+// Object for creating squares on board
 function Square(num, newColor, x, y, context){
    this.index = num;
    this.color = newColor;
@@ -46,12 +49,21 @@ function Square(num, newColor, x, y, context){
    this.y = y;
    this.context = context;
    
+   //Draw the square 
    this.drawSquare = function() {
       context.fillStyle = this.color;
       context.fillRect(this.x, this.y, 50,50);
    }
+   // I want to add a listener to each square but this doesn't work
+   /*
+   this.addEventListener('click',function () {
+      alert("here");
+   },false);
+   */
+
 }         
 
+// Create the board with squares.
 function fillBoard(squares) {
    var index = 0;
    for (var i = 0; i < 8; i++) {
@@ -60,9 +72,6 @@ function fillBoard(squares) {
       }
    }
 }
-
-
-
 
 //Function to change amount of times game played.
 function times_onchange()
@@ -76,14 +85,8 @@ function times_onchange()
    }
 }
 
-//Function that creates array and returns results at end.
-function createGame_onclick()
-{
-   var gameBoard = createArray();
-   gameBegin(gameBoard);
-}
 
-//Function used to determine stats for user.
+//Function used to determine stats for user note not a part of the game yet.
 function gameBegin(gameBoard)
 {
    var highest = 0;
