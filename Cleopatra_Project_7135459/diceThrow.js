@@ -6,37 +6,37 @@ Purpose: This program will create the logic for the board game resembling snakes
 in a format to test playability of game.
 */
 
-function getSquare(gameBoard, games)
+function getSquare(games)
 {
-	//Creating the variables that are used to determine square and statistics.
-	var throwCount = 0;
-	var diceTotal = 0;
-   var diceRoll = 0;
-	var limit = gameBoard.length-1;
-	//While loop that takes the user to square 0 and then begins game.
-	alert("Rolling dice for game " + games);
-	while (diceRoll != 6)
-	{
-      diceRoll = rollDice();
-      throwCount++;
-	}
-	//A while loop that gets the accumulated total and checks condition for win.
-	while (diceTotal != limit)
-	{
-      //Alerting user to diceroll amount and square landed on.
-		alert("On square " + diceTotal);
-      diceRoll = rollDice();
-      throwCount++;
-      diceTotal += Number(diceRoll);
-		diceTotal = SnakeOrLadderTest(diceTotal, gameBoard);
-		//If that keeps user on square if total greater than the finish target. 
+   var limit = 80;
+   diceRoll = rollDice(); 
+	if (gameStarted == true) {
+      //If that keeps user on square if total greater than the finish target. 
+      diceTotal += diceRoll;
+      if (diceTotal <= limit)
+      {
+         player.update(diceRoll);
+         alert("On square " + diceTotal);
+      }
 		if (diceTotal > limit)
 		{
 			diceTotal -= diceRoll;	
 		}	
+      diceTotal = SnakeOrLadderTest(diceTotal);
 	}
 	//Game finishes and and total rolls of the dice are returned for totals
-	alert("Congratulations you win game");
+   if (diceTotal == limit) {
+      alert("Congratulations you win game");
+   }
+   if (gameStarted == false) {
+      if (diceRoll == 6) {
+         gameStarted = true;
+         alert("On square " + diceTotal);
+         player = new Player();
+         player.drawPlayer();
+      }
+      throwCount++;
+	}
 	return throwCount;
 }
 
@@ -50,19 +50,19 @@ function rollDice()
 }
 
 // Function that notifies if ladder or snake has been activated
-function SnakeOrLadderTest(diceTotal, gameBoard)
+function SnakeOrLadderTest(diceTotal)
 {
    //Ladder object identified.
-   if (diceTotal < gameBoard[diceTotal] && gameBoard[diceTotal] != 0)
+   if (diceTotal < squares[diceTotal] && squares[diceTotal] != 0)
    {
       alert("Square " + diceTotal + " = landed on ladder");
-      diceTotal = gameBoard[diceTotal];
+      diceTotal = squares[diceTotal];
    }
    //Snake object identified.
-   else if	(diceTotal > gameBoard[diceTotal] && gameBoard[diceTotal] != 0)
+   else if	(diceTotal > squares[diceTotal] && squares[diceTotal] != 0)
    {
       alert("Square " + diceTotal + " = landed on snake");
-      diceTotal = gameBoard[diceTotal];
+      diceTotal = squares[diceTotal];
    }
    return Number(diceTotal);
 }

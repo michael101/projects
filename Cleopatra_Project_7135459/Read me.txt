@@ -1,3 +1,31 @@
 I want to change this to a graphical representation that
 allows users to add or remove an object before each turn
 and add text function to notify next persons turn.
+
+window.onkeydown = function( e ) {
+    e = e || window.event;
+    var code = e.keyCode;
+    if ( code === 37 ) {
+        particle.vx = -200;
+    } else if ( code === 38 ) {
+        particle.vy = -200;
+    } else if ( code === 39 ) {
+        particle.vx = 200;
+    } else if ( code === 40 ) {
+        particle.vy = 200;
+    }
+};
+
+window.onkeyup = function( e ) {
+    e = e || window.event;
+    var code = e.keyCode;
+    if ( code === 37 ) {
+        particle.vx = 0;
+    } else if ( code === 38 ) {
+        particle.vy = 0;
+    } else if ( code === 39 ) {
+        particle.vx = 0;
+    } else if ( code === 40 ) {
+        particle.vy = 0;
+    }
+};
