@@ -8,39 +8,38 @@ in a format to test playability of game.
 
 // Global variable for board
 var squares = [];
-var gameStarted = false;
 var throwCount = 0;
-var diceTotal = 1;
-var player;
+var players = [];
 var context;
-var reverse = false;
+var canvas;
 
 function makeBoard() {
    //get the canvas
-   var canvas = document.getElementById("canvas");
+   canvas = document.getElementById("canvas");
    //give the canvas a width and a height
    canvas.width = 500;
    canvas.height = 400;
    //get a 2d context of the canvas
    context = canvas.getContext("2d");
    
+   players.push(new Player("blue"));
+   players.push(new Player("red"));
+   
    var x = 0;
    var y = 0;
-   var num = 0;
    
    for (var i = 0; i < 8; i++) {
       for (var j = 0; j < 10; j++) {
          if (j % 2 == 0 && i % 2 != 0) {
-            squares.push(new Square(num, "grey", x, y));
+            squares.push(new Square("grey", x, y));
          }
          else if (j % 2 != 0 && i % 2 == 0) {
-            squares.push(new Square(num, "grey", x, y));
+            squares.push(new Square("grey", x, y));
          }
          else {
-            squares.push(new Square(num, "white", x, y));
+            squares.push(new Square("white", x, y));
          }
          x += 50;
-         num++;
       }
       x = 0;
       y += 50;
@@ -49,8 +48,7 @@ function makeBoard() {
 }
 
 // Object for creating squares on board
-function Square(num, newColor, x, y){
-   this.index = num;
+function Square(newColor, x, y){
    this.color = newColor;
    this.x = x;
    this.y = y;
@@ -74,42 +72,57 @@ function fillBoard() {
 
 function Player(color) 
 {
-   this.x = 25,
-   this.y = canvas.height - 25,
-   this.radius = 20,
-   this.color = "blue";
+   var x = 25;
+   var y = canvas.height - 25;
+   var radius = 20;
+   var color = color;
+   var started = false;
+   var diceTotal = 1;
+   this.reverse = false;
    
-   
+   this.getStarted = function() {
+      return started;
+   }
+   this.setStarted = function(start) {
+      started = start;
+   }
+   this.getSquareNum = function() {
+      return diceTotal;
+   }
+   this.setSquareNum = function(total) {
+      diceTotal += total;
+   }
    this.drawPlayer = function() {
       context.beginPath();
-      context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI );
-      context.fillStyle = this.color;
+      context.arc(x, y, radius, 0, 2 * Math.PI );
+      context.fillStyle = color;
       context.fill();
    }
    // Game loop update function
    this.update = function(moves) {    
       for (var i = 0; i < moves; i++)
       {
-         if (this.x == 25 && reverse == true)
+         if (x == 25 && this.reverse == true)
          {
-            this.y -= 50;
-            reverse = false;
+            y -= 50;
+            this.reverse = false;
          }
-         else if (reverse == true)
+         else if (this.reverse == true)
          {
-            this.x -= 50;
+            x -= 50;
          }
-         else if (this.x >= canvas.width - 25)
+         else if (x >= canvas.width - 25)
          {
-            this.y -= 50;
-            reverse = true;
+            y -= 50;
+            this.reverse = true;
          }         
-         else if (reverse == false)  
+         else if (this.reverse == false)  
          {
-            this.x += 50;
+            x += 50;
          }
          makeBoard();
-         this.drawPlayer();
+         players[0].drawPlayer();
+         players[1].drawPlayer();
       }
    }
 }
