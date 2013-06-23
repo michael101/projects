@@ -65,7 +65,11 @@ function Square(num, newColor, x, y){
 // Create the board with squares.
 function fillBoard() {
    var index = 0;
-
+   var ladder = new Image();
+   ladder.src = "ladder.gif";
+   var snake = new Image();
+   snake.src = "snake.gif";
+   
    for (var i = 0; i < 8; i++) {
       for (var j = 0; j < 10; j++) {
          squares[index++].drawSquare();
