@@ -9,9 +9,9 @@ Purpose: This program will create a Board game resembling snakes and ladders
 in a format to test playability of game and gather statistics.-->
 <!--css style the way in which the inital page (form) is presented.-->
 	<title>Task 4, Cleopatra Project</title>
+   <link type="text/css" rel="stylesheet" href="styleSheet.css" />
 	<script type= "text/javascript" src="diceThrow.js"></script>
-	<script type= "text/javascript" src="createArray.js"></script>
-	<link type="text/css" rel="stylesheet" href="styleSheet.css" />
+	<script src="jquery.js"></script>  
 	<script type="text/javascript" src="gameStart.js"></script>
 </head> 
 <!--Form components declared and default value for times is set, button types created-->
@@ -19,11 +19,6 @@ in a format to test playability of game and gather statistics.-->
 	<form name="form1">
 	<fieldset id="entryBox">
 		<h1>Cleopatra Project</h1>
-      <div id="textwindows">
-         <textarea rows="16" cols="36" name="textarea1"></textarea>
-         <textarea rows="16" cols="36" name="textarea2"></textarea>
-         <textarea rows="4" cols="76" name="textarea3"></textarea>
-      </div>
 		<!--User input for game board ID and times played-->
 		<p id="prompt">
 			Board code:
@@ -36,6 +31,8 @@ in a format to test playability of game and gather statistics.-->
       </canvas>
 		<!--Button declared and created-->
 		<p id="start">
+         <img id="ladder" height="100" width="30" src="ladder.gif">
+         <img id="snake" height="100" width="30" src="snake.gif">
 			<input type="Reset" value="Reset Games" />
          <input type="button" value="Roll Dice" onclick="getSquare()" />
 		</p>

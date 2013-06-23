@@ -21,19 +21,17 @@ function getSquare(games)
             if (i == 0)
             {
                players[0].update(diceRoll);
-               players[1].update();
             }
             else
             {
                players[1].update(diceRoll);
-               players[0].update();
             }
          }
          if (players[i].getSquareNum() > limit)
          {
             players[i].setSquareNum(-diceRoll);	
          }	
-         //players[i].setSquareNum(SnakeOrLadderTest(player[i].getSquareNum()));
+         players[i].setSquareNum(SnakeOrLadderTest(players[i]));
       }
       //Game finishes and and total rolls of the dice are returned for totals
       if (players[i].getSquareNum() == limit) {
@@ -64,19 +62,25 @@ function rollDice(index)
 }
 
 // Function that notifies if ladder or snake has been activated
-function SnakeOrLadderTest(diceTotal)
+function SnakeOrLadderTest(player)
 {
+   var x = player.getX();
+   var y = player.getY();
    //Ladder object identified.
-   if (diceTotal < squares[diceTotal] && squares[diceTotal] != 0)
+   if ((x == 175 && y == 375) || (x == 75 && y == 175) ||
+       (x == 425 && y == 225))
    {
-      alert("Square " + diceTotal + " = landed on ladder");
-      diceTotal = squares[diceTotal];
+      player.setY(-100);
+      player.update(0);
+      return 20;
    }
    //Snake object identified.
-   else if	(diceTotal > squares[diceTotal] && squares[diceTotal] != 0)
+   else if((x == 275 && y == 275) || (x == 175 && y == 25) || 
+           (x == 325 && y == 75))
    {
-      alert("Square " + diceTotal + " = landed on snake");
-      diceTotal = squares[diceTotal];
+      player.setY(100);
+      player.update(0);
+      return -20;
    }
-   return Number(diceTotal);
+   return 0;
 }

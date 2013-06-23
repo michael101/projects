@@ -27,19 +27,21 @@ function makeBoard() {
    
    var x = 0;
    var y = 0;
+   var num = 1;
    
    for (var i = 0; i < 8; i++) {
       for (var j = 0; j < 10; j++) {
          if (j % 2 == 0 && i % 2 != 0) {
-            squares.push(new Square("grey", x, y));
+            squares.push(new Square(num, "grey", x, y));
          }
          else if (j % 2 != 0 && i % 2 == 0) {
-            squares.push(new Square("grey", x, y));
+            squares.push(new Square(num, "grey", x, y));
          }
          else {
-            squares.push(new Square("white", x, y));
+            squares.push(new Square(num, "white", x, y));
          }
          x += 50;
+         num++;
       }
       x = 0;
       y += 50;
@@ -48,11 +50,11 @@ function makeBoard() {
 }
 
 // Object for creating squares on board
-function Square(newColor, x, y){
+function Square(num, newColor, x, y){
    this.color = newColor;
    this.x = x;
    this.y = y;
-   
+      
    //Draw the square 
    this.drawSquare = function() {
       context.fillStyle = this.color;
@@ -63,11 +65,19 @@ function Square(newColor, x, y){
 // Create the board with squares.
 function fillBoard() {
    var index = 0;
+
    for (var i = 0; i < 8; i++) {
       for (var j = 0; j < 10; j++) {
          squares[index++].drawSquare();
       }
    }
+   // Dirty coded snake and ladder objects
+   context.drawImage(ladder, 60, 75, 30, 110);
+   context.drawImage(ladder, 160, canvas.height -125, 30, 110);
+   context.drawImage(ladder, 410, 130, 30, 110);
+   context.drawImage(snake, 260, 260, 30, 110);
+   context.drawImage(snake, 310, 75, 30, 110);
+   context.drawImage(snake, 160, 25, 30, 110);
 }
 
 function Player(color) 
@@ -80,6 +90,15 @@ function Player(color)
    var diceTotal = 1;
    this.reverse = false;
    
+   this.getX = function() {
+      return x;
+   }   
+   this.getY = function() {
+      return y;
+   }
+   this.setY = function(object) {
+      y += object;
+   }
    this.getStarted = function() {
       return started;
    }
