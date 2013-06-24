@@ -13,8 +13,7 @@ function getSquare(games)
    for (var i = 0; i < 2; i++)
    {
       diceRoll = rollDice(i); 
-      if (players[i].getStarted() == true) {
-         //If that keeps user on square if total greater than the finish target. 
+      if (players[i].getStarted() == true) { 
          players[i].setSquareNum(diceRoll);
          if (players[i].getSquareNum() <= limit)
          {
@@ -45,8 +44,8 @@ function getSquare(games)
             alert("On square " + players[i].getSquareNum());
             players[i].drawPlayer();
          }
-         throwCount++;
       }
+      throwCount++;
 	}
 	return throwCount;
 }
@@ -55,9 +54,8 @@ function getSquare(games)
 function rollDice(index)
 {
    var player = Number(index +1);
-	alert("Rolling dice for player " + player);
 	var diceRoll = (Math.floor(Math.random() * 6) + 1);
-	alert(diceRoll);
+	alert("Player " + player + " rolled a " + diceRoll);
    return diceRoll;
 }
 
@@ -67,20 +65,28 @@ function SnakeOrLadderTest(player)
    var x = player.getX();
    var y = player.getY();
    //Ladder object identified.
-   if ((x == 175 && y == 375) || (x == 75 && y == 175) ||
-       (x == 425 && y == 225))
+   for (var i = 0; i < ladders.length; i++)
    {
-      player.setY(-100);
-      player.update(0);
-      return 20;
+      if (x == ladders[i].getBaseX() && y == ladders[i].getBaseY())
+      {
+         player.setY(-100);
+         makeBoard();
+         players[0].drawPlayer();
+         players[1].drawPlayer();
+         return 20;
+      }
    }
    //Snake object identified.
-   else if((x == 275 && y == 275) || (x == 175 && y == 25) || 
-           (x == 325 && y == 75))
+   for (var j = 0; j < snakes.length; j++)
    {
-      player.setY(100);
-      player.update(0);
-      return -20;
+      if (x == snakes[j].getBaseX() && y == snakes[j].getBaseY())
+      {
+         player.setY(100);
+         makeBoard();
+         players[0].drawPlayer();
+         players[1].drawPlayer();
+         return -20;
+      }
    }
    return 0;
 }

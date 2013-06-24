@@ -12,6 +12,8 @@ var throwCount = 0;
 var players = [];
 var context;
 var canvas;
+var ladders = [];
+var snakes = [];
 
 function makeBoard() {
    //get the canvas
@@ -22,8 +24,7 @@ function makeBoard() {
    //get a 2d context of the canvas
    context = canvas.getContext("2d");
    
-   players.push(new Player("blue"));
-   players.push(new Player("red"));
+   initializeLists();
    
    var x = 0;
    var y = 0;
@@ -49,6 +50,22 @@ function makeBoard() {
    fillBoard();
 }
 
+function initializeLists()
+{
+   var ladder = new Image();
+   ladder.src = "ladder.gif";
+   var snake = new Image();
+   snake.src = "snake.gif";
+   players.push(new Player("blue"));
+   players.push(new Player("red"));
+   ladders.push(new Ladder(ladder, 60, 75, 30, 110));
+   ladders.push(new Ladder(ladder, 160, canvas.height -125, 30, 110));
+   ladders.push(new Ladder(ladder, 410, 125, 30, 110));
+   snakes.push(new Snake(snake, 260, 275, 30, 110));
+   snakes.push(new Snake(snake, 310, 75, 30, 110));
+   snakes.push(new Snake(snake, 160, 25, 30, 110));
+}
+
 // Object for creating squares on board
 function Square(num, newColor, x, y){
    this.color = newColor;
@@ -65,24 +82,63 @@ function Square(num, newColor, x, y){
 // Create the board with squares.
 function fillBoard() {
    var index = 0;
-   var ladder = new Image();
-   ladder.src = "ladder.gif";
-   var snake = new Image();
-   snake.src = "snake.gif";
-   
+     
    for (var i = 0; i < 8; i++) {
       for (var j = 0; j < 10; j++) {
          squares[index++].drawSquare();
       }
    }
-   // Dirty coded snake and ladder objects
-   context.drawImage(ladder, 60, 75, 30, 110);
-   context.drawImage(ladder, 160, canvas.height -125, 30, 110);
-   context.drawImage(ladder, 410, 130, 30, 110);
-   context.drawImage(snake, 260, 260, 30, 110);
-   context.drawImage(snake, 310, 75, 30, 110);
-   context.drawImage(snake, 160, 25, 30, 110);
+   for (var i = 0; i < ladders.length; i++)
+   {
+      ladders[i].DrawImage();
+   }
+   for (var i = 0; i < snakes.length; i++)
+   {
+      snakes[i].DrawImage();
+   }
 }
+
+function Ladder(image, x, y, xs, ys) {
+   var image = image;
+   var x = x;
+   var y = y;
+   var xs = xs;
+   var ys = ys;
+   var baseX = x + 15;
+   var baseY = y + 100;
+   
+   this.getBaseX = function() {
+      return baseX;
+   }
+   this.getBaseY = function() {
+      return baseY;
+   }
+   this.DrawImage = function() {
+      context.drawImage(image, x, y, xs, ys);
+   }
+}
+
+function Snake(image, x, y, xs, ys) {
+   var image = image;
+   var x = x;
+   var y = y;
+   var xs = xs;
+   var ys = ys;
+   var baseX = x + 15;
+   var baseY = y;
+   
+   this.getBaseX = function() {
+      return baseX;
+   }
+   this.getBaseY = function() {
+      return baseY;
+   }
+   this.DrawImage = function() {
+      context.drawImage(image, x, y, xs, ys);
+   }
+}
+
+
 
 function Player(color) 
 {
