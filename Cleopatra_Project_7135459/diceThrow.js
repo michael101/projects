@@ -6,10 +6,10 @@ Purpose: This program will create the logic for the board game resembling snakes
 in a format to test playability of game.
 */
 
+
 function getSquare(games)
 {
    var limit = 80;
-   
    for (var i = 0; i < 2; i++)
    {
       diceRoll = rollDice(i); 
@@ -17,14 +17,7 @@ function getSquare(games)
          players[i].setSquareNum(diceRoll);
          if (players[i].getSquareNum() <= limit)
          {
-            if (i == 0)
-            {
-               players[0].update(diceRoll);
-            }
-            else
-            {
-               players[1].update(diceRoll);
-            }
+            players[i].update(diceRoll);
          }
          if (players[i].getSquareNum() > limit)
          {
@@ -34,9 +27,8 @@ function getSquare(games)
       }
       //Game finishes and and total rolls of the dice are returned for totals
       if (players[i].getSquareNum() == limit) {
-         var player = Number(i + 1);
-         alert("Congratulations you win game player " + player);
-         return throwCount;
+         alert("Congratulations you win game " + players[i].returnName());
+         break;
       }
       if (players[i].getStarted() == false) {
          if (diceRoll == 6) {
@@ -45,19 +37,18 @@ function getSquare(games)
             players[i].drawPlayer();
          }
       }
-      throwCount++;
 	}
-	return throwCount;
 }
+
 
 // Function to alert user of dice roll
 function rollDice(index)
 {
-   var player = Number(index +1);
 	var diceRoll = (Math.floor(Math.random() * 6) + 1);
-	alert("Player " + player + " rolled a " + diceRoll);
+	alert(players[index].returnName() + " rolled a " + diceRoll);
    return diceRoll;
 }
+
 
 // Function that notifies if ladder or snake has been activated
 function SnakeOrLadderTest(player)
@@ -70,6 +61,7 @@ function SnakeOrLadderTest(player)
       if (x == ladders[i].getBaseX() && y == ladders[i].getBaseY())
       {
          player.setY(-100);
+         alert("You landed on a ladder " +player.returnName());
          makeBoard();
          players[0].drawPlayer();
          players[1].drawPlayer();
@@ -82,6 +74,7 @@ function SnakeOrLadderTest(player)
       if (x == snakes[j].getBaseX() && y == snakes[j].getBaseY())
       {
          player.setY(100);
+         alert("You landed on a snake " +player.returnName());
          makeBoard();
          players[0].drawPlayer();
          players[1].drawPlayer();
@@ -90,3 +83,4 @@ function SnakeOrLadderTest(player)
    }
    return 0;
 }
+

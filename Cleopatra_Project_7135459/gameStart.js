@@ -6,14 +6,19 @@ Purpose: This program will create the logic for the board game resembling snakes
 in a format to test playability of game.
 */
 
+
 // Global variable for board
 var squares = [];
-var throwCount = 0;
 var players = [];
 var context;
 var canvas;
 var ladders = [];
 var snakes = [];
+alert("This is a one player game vs a computer. \n" +
+      "You need a six before you can move from square \n" +
+      "one and you need the correct number to land on the \n " +
+      " final square");
+var playerName = prompt("What is your name?");
 
 function makeBoard() {
    //get the canvas
@@ -28,21 +33,19 @@ function makeBoard() {
    
    var x = 0;
    var y = 0;
-   var num = 1;
    
    for (var i = 0; i < 8; i++) {
       for (var j = 0; j < 10; j++) {
          if (j % 2 == 0 && i % 2 != 0) {
-            squares.push(new Square(num, "grey", x, y));
+            squares.push(new Square("grey", x, y));
          }
          else if (j % 2 != 0 && i % 2 == 0) {
-            squares.push(new Square(num, "grey", x, y));
+            squares.push(new Square("grey", x, y));
          }
          else {
-            squares.push(new Square(num, "white", x, y));
+            squares.push(new Square("white", x, y));
          }
          x += 50;
-         num++;
       }
       x = 0;
       y += 50;
@@ -56,8 +59,8 @@ function initializeLists()
    ladder.src = "ladder.gif";
    var snake = new Image();
    snake.src = "snake.gif";
-   players.push(new Player("blue"));
-   players.push(new Player("red"));
+   players.push(new Player("blue", playerName));
+   players.push(new Player("red", "computer"));
    ladders.push(new Ladder(ladder, 60, 75, 30, 110));
    ladders.push(new Ladder(ladder, 160, canvas.height -125, 30, 110));
    ladders.push(new Ladder(ladder, 410, 125, 30, 110));
@@ -66,18 +69,20 @@ function initializeLists()
    snakes.push(new Snake(snake, 160, 25, 30, 110));
 }
 
+
 // Object for creating squares on board
-function Square(num, newColor, x, y){
-   this.color = newColor;
-   this.x = x;
-   this.y = y;
+function Square(newColor, x, y){
+   var color = newColor;
+   var x = x;
+   var y = y;
       
    //Draw the square 
    this.drawSquare = function() {
-      context.fillStyle = this.color;
-      context.fillRect(this.x, this.y, 50,50);
+      context.fillStyle = color;
+      context.fillRect(x, y, 50,50);
    }
 }         
+
 
 // Create the board with squares.
 function fillBoard() {
@@ -138,18 +143,20 @@ function Snake(image, x, y, xs, ys) {
    }
 }
 
-
-
-function Player(color) 
+function Player(color, name) 
 {
+   var name = name;
    var x = 25;
    var y = canvas.height - 25;
    var radius = 20;
    var color = color;
    var started = false;
    var diceTotal = 1;
-   this.reverse = false;
+   var reverse = false;
    
+   this.returnName = function() {
+      return name;
+   }
    this.getX = function() {
       return x;
    }   
@@ -181,21 +188,21 @@ function Player(color)
    this.update = function(moves) {    
       for (var i = 0; i < moves; i++)
       {
-         if (x == 25 && this.reverse == true)
+         if (x == 25 && reverse == true)
          {
             y -= 50;
-            this.reverse = false;
+            reverse = false;
          }
-         else if (this.reverse == true)
+         else if (reverse == true)
          {
             x -= 50;
          }
          else if (x >= canvas.width - 25)
          {
             y -= 50;
-            this.reverse = true;
+            reverse = true;
          }         
-         else if (this.reverse == false)  
+         else if (reverse == false)  
          {
             x += 50;
          }
@@ -204,58 +211,5 @@ function Player(color)
          players[1].drawPlayer();
       }
    }
-}
-
-//Function to change amount of times game played.
-function times_onchange()
-{
-   var times = document.form1.times;
-   if (isNaN(times.value) == true)
-   {
-      alert("Please enter a valid amount as integer");
-      times.focus();
-      times.select();	
-   }
-}
-
-
-//Function used to determine stats for user note not a part of the game yet.
-function gameBegin()
-{
-   var highest = 0;
-   var lowest = 1000;
-   var games = 1;
-   var total = 0;
-   var count = 0;
-   //Board specifics read and array created
-   var times = document.form1.times.value;
-   var boardCode = document.form1.boardCode.value;
-   //Loop begins till all games played.
-   while (games <= times)
-   {
-      var throwCount = getSquare(squares, games);
-      total += throwCount;
-      if (throwCount > highest)
-      {
-         highest = throwCount;
-      }
-      if (throwCount < lowest)
-      {
-         lowest = throwCount;
-      }	
-      games++;
-   }
-   
-   //Statistics written to form.
-   games = games - 1;
-   var sum = total/games;
-   var average = sum.toFixed(1);
-   var myMessage = window.document.form1.textarea3.value;
-   var output = "From " + games + " games created the following statistics :" + "\n"; 
-   var output1 = "Highest amount of turns is " + highest + "\n";
-   var output2 = "Lowest amount of turns is " + lowest + "\n";
-   var output3 = "Average amount of turns for "+ boardCode+ " is " + average;
-   myMessage = myMessage + output + output1 + output2 + output3;
-   document.form1.textarea3.value = myMessage;
 }
 

@@ -19,15 +19,9 @@ in a format to test playability of game and gather statistics.-->
 	<form name="form1">
 	<fieldset id="entryBox">
 		<h1>Cleopatra Project</h1>
-		<!--User input for game board ID and times played-->
-		<p id="prompt">
-			Board code:
-			<input type="text" name="boardCode" size="6" maxlength="6" value="Game_1"/>
-			<br />
-			Times to play:
-			<input type="text" name="times" onchange="times_onchange()" size="4" value="3" />
-      </p>
+		<div id="alert"></div>
       <canvas id="canvas" >
+      If you can read this your browser doesn't support the canvas function.
       </canvas>
 		<!--Button declared and created-->
 		<p id="start">
