@@ -1,40 +1,44 @@
 /* Name: ABGL Cleopatra project
 Author: Michael Harley
 Date created: 29/10/2011 
+last modified 25/06/2013
 E-mail: mickoh27@hotmail.com
 Purpose: This program will create the logic for the board game resembling snakes and ladders
 in a format to test playability of game.
 */
 
-
+// Function to control player movement called by roll dice button
 function getSquare(games)
 {
    var limit = 80;
-   for (var i = 0; i < 2; i++)
+   var players = board.getPlayers();
+   
+   for (var i = 0; i < numberOfPlayers; i++)
    {
       diceRoll = rollDice(i); 
-      if (players[i].getStarted() == true) { 
-         players[i].setSquareNum(diceRoll);
-         if (players[i].getSquareNum() <= limit)
+      var player = players[i];
+      if (player.getStarted() == true) { 
+         player.setSquareNum(diceRoll);
+         if (player.getSquareNum() <= limit)
          {
-            players[i].update(diceRoll);
+            update(diceRoll, player);
          }
-         if (players[i].getSquareNum() > limit)
+         if (player.getSquareNum() > limit)
          {
-            players[i].setSquareNum(-diceRoll);	
+            player.setSquareNum(-diceRoll);	
          }	
-         players[i].setSquareNum(SnakeOrLadderTest(players[i]));
+         player.setSquareNum(SnakeOrLadderTest(player));
       }
       //Game finishes and and total rolls of the dice are returned for totals
-      if (players[i].getSquareNum() == limit) {
-         alert("Congratulations you win game " + players[i].returnName());
+      if (player.getSquareNum() == limit) {
+         alert("Congratulations you win game " + player.returnName());
          break;
       }
-      if (players[i].getStarted() == false) {
+      if (player.getStarted() == false) {
          if (diceRoll == 6) {
-            players[i].setStarted(true);
-            alert("On square " + players[i].getSquareNum());
-            players[i].drawPlayer();
+            player.setStarted(true);
+            alert("On square " + player.getSquareNum());
+            player.drawPlayer();
          }
       }
 	}
@@ -44,6 +48,7 @@ function getSquare(games)
 // Function to alert user of dice roll
 function rollDice(index)
 {
+   var players = board.getPlayers();
 	var diceRoll = (Math.floor(Math.random() * 6) + 1);
 	alert(players[index].returnName() + " rolled a " + diceRoll);
    return diceRoll;
@@ -55,16 +60,16 @@ function SnakeOrLadderTest(player)
 {
    var x = player.getX();
    var y = player.getY();
+   var ladders = board.getLadders();
+   var snakes = board.getSnakes();
    //Ladder object identified.
    for (var i = 0; i < ladders.length; i++)
    {
       if (x == ladders[i].getBaseX() && y == ladders[i].getBaseY())
       {
          player.setY(-100);
-         alert("You landed on a ladder " +player.returnName());
-         makeBoard();
-         players[0].drawPlayer();
-         players[1].drawPlayer();
+         alert("You landed on a ladder " + player.returnName());
+         drawAllPlayers();
          return 20;
       }
    }
@@ -75,9 +80,7 @@ function SnakeOrLadderTest(player)
       {
          player.setY(100);
          alert("You landed on a snake " +player.returnName());
-         makeBoard();
-         players[0].drawPlayer();
-         players[1].drawPlayer();
+         drawAllPlayers();
          return -20;
       }
    }

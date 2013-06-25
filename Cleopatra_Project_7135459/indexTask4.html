@@ -4,6 +4,7 @@
 <!--Name: ABGL Cleopatra project
 Author: Michael Harley
 Date created: 29/10/2011 
+last modified 25/06/2013
 E-mail: mickoh27@hotmail.com
 Purpose: This program will create a Board game resembling snakes and ladders
 in a format to test playability of game and gather statistics.-->
@@ -27,7 +28,7 @@ in a format to test playability of game and gather statistics.-->
 		<p id="start">
          <img id="ladder" height="100" width="30" src="ladder.gif">
          <img id="snake" height="100" width="30" src="snake.gif">
-			<input type="Reset" value="Reset Games" />
+			<input type="Reset" value="Reset Games" onclick="clearBoard()" />
          <input type="button" value="Roll Dice" onclick="getSquare()" />
 		</p>
 	</fieldset>

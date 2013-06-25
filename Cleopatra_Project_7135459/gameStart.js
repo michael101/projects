@@ -1,25 +1,110 @@
 /* Name: ABGL Cleopatra project
 Author: Michael Harley
 Date created: 29/10/2011 
+last modified 25/06/2013
 E-mail: mickoh27@hotmail.com
 Purpose: This program will create the logic for the board game resembling snakes and ladders
 in a format to test playability of game.
 */
 
-
 // Global variable for board
-var squares = [];
-var players = [];
 var context;
 var canvas;
-var ladders = [];
-var snakes = [];
-alert("This is a one player game vs a computer. \n" +
+var tempPlayers = [];
+var tempColors = ["red", "blue", "green", "black"];
+var numberOfPlayers = 0;
+var playerName = "";
+alert("This is a one to four player game vs a computer. \n" +
       "You need a six before you can move from square \n" +
-      "one and you need the correct number to land on the \n " +
-      " final square");
-var playerName = prompt("What is your name?");
+      "one and you need the correct number to land on the \n" +
+      "final square");
+var board = new Board();
+board.createBoard();
 
+// Board constuctor
+function Board() {
+   var squares = [];
+   var players = [];
+   var ladders = [];
+   var snakes = [];
+   
+   this.getSquares = function() {
+      return squares;
+   }
+   this.getPlayers = function() {
+      return players;
+   }
+   this.getLadders = function() {
+      return ladders;
+   }
+   this.getSnakes = function() {
+      return snakes;
+   }   
+   // Get player numbers and names
+   this.createBoard = function() {
+      while (numberOfPlayers < 1 || numberOfPlayers > 4 || isNaN(numberOfPlayers) == true)
+      {
+         numberOfPlayers = prompt("How many players to play? (1 to 4)");
+      }
+      for (var i = 0; i < numberOfPlayers; i++)
+      {
+         playerName = prompt("What is your name player "+ tempColors[i] + "?");
+         tempPlayers.push(playerName);
+      }
+   }
+   // Set the color for each square
+   this.fillSquares = function() {
+      var x = 0;
+      var y = 0;
+      for (var i = 0; i < 8; i++) {
+         for (var j = 0; j < 10; j++) {
+            if (j % 2 == 0 && i % 2 != 0) {
+               squares.push(new Square("grey", x, y));
+            }
+            else if (j % 2 != 0 && i % 2 == 0) {
+               squares.push(new Square("grey", x, y));
+            }
+            else {
+               squares.push(new Square("white", x, y));
+            }
+            x += 50;
+         }
+         x = 0;
+         y += 50;
+      }
+   }
+   // Create the board with squares.
+   this.fillBoard = function() {
+      var index = 0;
+        
+      for (var i = 0; i < 8; i++) {
+         for (var j = 0; j < 10; j++) {
+            squares[index++].drawSquare();
+         }
+      }
+      for (var i = 0; i < ladders.length; i++)
+      {
+         ladders[i].DrawImage();
+      }
+      for (var i = 0; i < snakes.length; i++)
+      {
+         snakes[i].DrawImage();
+      }
+   }
+}
+
+// Resets the board for new players
+function clearBoard() {
+   numberOfPlayers = 0;
+   tempPlayers = new Array();
+   board = new Board();
+   board.createBoard();
+   initializeLists();
+   board.fillSquares();
+   board.fillBoard();
+}
+
+// Function that recalls the current board and player positions
 function makeBoard() {
    //get the canvas
    canvas = document.getElementById("canvas");
@@ -28,39 +113,32 @@ function makeBoard() {
    canvas.height = 400;
    //get a 2d context of the canvas
    context = canvas.getContext("2d");
-   
    initializeLists();
-   
-   var x = 0;
-   var y = 0;
-   
-   for (var i = 0; i < 8; i++) {
-      for (var j = 0; j < 10; j++) {
-         if (j % 2 == 0 && i % 2 != 0) {
-            squares.push(new Square("grey", x, y));
-         }
-         else if (j % 2 != 0 && i % 2 == 0) {
-            squares.push(new Square("grey", x, y));
-         }
-         else {
-            squares.push(new Square("white", x, y));
-         }
-         x += 50;
-      }
-      x = 0;
-      y += 50;
-   }
-   fillBoard();
+   board.fillSquares();
+   board.fillBoard();
 }
 
+// Hardcoded objects and adding player objects
 function initializeLists()
 {
    var ladder = new Image();
    ladder.src = "ladder.gif";
    var snake = new Image();
    snake.src = "snake.gif";
-   players.push(new Player("blue", playerName));
-   players.push(new Player("red", "computer"));
+   var ladders = board.getLadders();
+   var snakes = board.getSnakes();
+   var players = board.getPlayers();
+   if (numberOfPlayers == 1) {
+      players.push(new Player("red", tempPlayers[0]));
+      players.push(new Player("blue", "computer"));
+      numberOfPlayers = 2;
+   }
+   else {
+      for (var i = 0; i < numberOfPlayers; i++)
+      {
+         players.push(new Player(tempColors[i], tempPlayers[i]));
+      }
+   }
    ladders.push(new Ladder(ladder, 60, 75, 30, 110));
    ladders.push(new Ladder(ladder, 160, canvas.height -125, 30, 110));
    ladders.push(new Ladder(ladder, 410, 125, 30, 110));
@@ -83,26 +161,7 @@ function Square(newColor, x, y){
    }
 }         
 
-
-// Create the board with squares.
-function fillBoard() {
-   var index = 0;
-     
-   for (var i = 0; i < 8; i++) {
-      for (var j = 0; j < 10; j++) {
-         squares[index++].drawSquare();
-      }
-   }
-   for (var i = 0; i < ladders.length; i++)
-   {
-      ladders[i].DrawImage();
-   }
-   for (var i = 0; i < snakes.length; i++)
-   {
-      snakes[i].DrawImage();
-   }
-}
-
+// Object to manage ladder images
 function Ladder(image, x, y, xs, ys) {
    var image = image;
    var x = x;
@@ -123,6 +182,7 @@ function Ladder(image, x, y, xs, ys) {
    }
 }
 
+// Object to mange snake images
 function Snake(image, x, y, xs, ys) {
    var image = image;
    var x = x;
@@ -143,6 +203,7 @@ function Snake(image, x, y, xs, ys) {
    }
 }
 
+// Player constructor
 function Player(color, name) 
 {
    var name = name;
@@ -160,11 +221,14 @@ function Player(color, name)
    this.getX = function() {
       return x;
    }   
+   this.setX = function(value) {
+      x += value;
+   }
    this.getY = function() {
       return y;
    }
-   this.setY = function(object) {
-      y += object;
+   this.setY = function(value) {
+      y += value;
    }
    this.getStarted = function() {
       return started;
@@ -178,38 +242,57 @@ function Player(color, name)
    this.setSquareNum = function(total) {
       diceTotal += total;
    }
+   this.getReverse = function() {
+      return reverse;
+   }
+   this.setReverse = function(value) {
+      reverse = value;
+   }
    this.drawPlayer = function() {
       context.beginPath();
       context.arc(x, y, radius, 0, 2 * Math.PI );
       context.fillStyle = color;
       context.fill();
    }
+}
    // Game loop update function
-   this.update = function(moves) {    
-      for (var i = 0; i < moves; i++)
+function update(moves, player) {    
+   for (var i = 0; i < moves; i++)
+   {
+      if (player.getX() == 25 && player.getReverse() == true)
       {
-         if (x == 25 && reverse == true)
-         {
-            y -= 50;
-            reverse = false;
-         }
-         else if (reverse == true)
-         {
-            x -= 50;
-         }
-         else if (x >= canvas.width - 25)
-         {
-            y -= 50;
-            reverse = true;
-         }         
-         else if (reverse == false)  
-         {
-            x += 50;
-         }
-         makeBoard();
-         players[0].drawPlayer();
-         players[1].drawPlayer();
+         player.setY(-50);
+         player.setReverse(false);
       }
+      else if (player.getReverse() == true)
+      {
+         player.setX(-50);
+      }
+      else if (player.getX() >= canvas.width - 25)
+      {
+         player.setY(-50);
+         player.setReverse(true);
+      }         
+      else if (player.getReverse() == false)  
+      {
+         player.setX(50);
+      }
+      drawAllPlayers();
    }
 }
+
+// Draws the appropriate amount of players positions
+function drawAllPlayers() {
+   var players = board.getPlayers();
+   makeBoard();
+   players[0].drawPlayer();
+   players[1].drawPlayer();
+   if (numberOfPlayers > 2) {
+      players[2].drawPlayer();
+   } 
+   if (numberOfPlayers == 4) {
+      players[3].drawPlayer();
+   }
+}
+
 
