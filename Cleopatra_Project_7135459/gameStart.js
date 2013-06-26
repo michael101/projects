@@ -270,7 +270,7 @@ function Player(color, name)
 {
    var name = name;
    var x = 25;
-   var y = canvas.height - 25;
+   var y = 375;
    var radius = 20;
    var color = color;
    var started = false;
