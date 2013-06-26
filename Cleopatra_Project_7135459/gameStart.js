@@ -8,6 +8,7 @@ in a format to test playability of game.
 */
 
 // Global variable for board
+var playerArray = ["player1", "player2", "player3", "player4"];
 var context;
 var canvas;
 var tempPlayers = [];
@@ -20,6 +21,8 @@ alert("This is a one to four player game vs a computer. \n" +
       "final square");
 var board = new Board();
 board.createBoard();
+initializeLists();
+board.fillSquares();
 
 // Board constuctor
 function Board() {
@@ -27,6 +30,8 @@ function Board() {
    var players = [];
    var ladders = [];
    var snakes = [];
+   var leftArrows = [];
+   var rightArrows = [];
    
    this.getSquares = function() {
       return squares;
@@ -40,6 +45,12 @@ function Board() {
    this.getSnakes = function() {
       return snakes;
    }   
+   this.getLeftArrows = function() {
+      return leftArrows;
+   }
+   this.getRightArrows = function() {
+      return rightArrows;
+   }
    // Get player numbers and names
    this.createBoard = function() {
       while (numberOfPlayers < 1 || numberOfPlayers > 4 || isNaN(numberOfPlayers) == true)
@@ -59,13 +70,13 @@ function Board() {
       for (var i = 0; i < 8; i++) {
          for (var j = 0; j < 10; j++) {
             if (j % 2 == 0 && i % 2 != 0) {
-               squares.push(new Square("grey", x, y));
+               squares.push(new Square("white", x, y));
             }
             else if (j % 2 != 0 && i % 2 == 0) {
-               squares.push(new Square("grey", x, y));
+               squares.push(new Square("white", x, y));
             }
             else {
-               squares.push(new Square("white", x, y));
+               squares.push(new Square("grey", x, y));
             }
             x += 50;
          }
@@ -90,6 +101,14 @@ function Board() {
       {
          snakes[i].DrawImage();
       }
+      for (var i = 0; i < leftArrows.length; i++)
+      {
+         leftArrows[i].DrawImage();
+      }
+      for (var i = 0; i < rightArrows.length; i++)
+      {
+         rightArrows[i].DrawImage();
+      }
    }
 }
 
@@ -102,6 +121,11 @@ function clearBoard() {
    initializeLists();
    board.fillSquares();
    board.fillBoard();
+   for (var i = 0; i < playerArray.length; i++)
+   {
+      var output = document.getElementById(playerArray[i]);
+      output.innerHTML = "Player " + Number(i + 1);
+   }
 }
 
 // Function that recalls the current board and player positions
@@ -125,12 +149,18 @@ function initializeLists()
    ladder.src = "ladder.gif";
    var snake = new Image();
    snake.src = "snake.gif";
+   var left = new Image();
+   left.src = "left.gif";
+   var right = new Image();
+   right.src = "right.gif";
    var ladders = board.getLadders();
    var snakes = board.getSnakes();
    var players = board.getPlayers();
+   var arrowsLeft = board.getLeftArrows();
+   var arrowsRight = board.getRightArrows();
    if (numberOfPlayers == 1) {
       players.push(new Player("red", tempPlayers[0]));
-      players.push(new Player("blue", "computer"));
+      players.push(new Player("blue", "Computer"));
       numberOfPlayers = 2;
    }
    else {
@@ -140,11 +170,19 @@ function initializeLists()
       }
    }
    ladders.push(new Ladder(ladder, 60, 75, 30, 110));
-   ladders.push(new Ladder(ladder, 160, canvas.height -125, 30, 110));
+   ladders.push(new Ladder(ladder, 160, 275, 30, 110));
    ladders.push(new Ladder(ladder, 410, 125, 30, 110));
    snakes.push(new Snake(snake, 260, 275, 30, 110));
    snakes.push(new Snake(snake, 310, 75, 30, 110));
    snakes.push(new Snake(snake, 160, 25, 30, 110));
+   arrowsLeft.push(new LeftArrow(left, 460, 10, 30, 30));
+   arrowsLeft.push(new LeftArrow(left, 460, 110, 30, 30));
+   arrowsLeft.push(new LeftArrow(left, 460, 210, 30, 30));
+   arrowsLeft.push(new LeftArrow(left, 460, 310, 30, 30));
+   arrowsRight.push(new RightArrow(right, 10, 60, 30, 30));
+   arrowsRight.push(new RightArrow(right, 10, 160, 30, 30));
+   arrowsRight.push(new RightArrow(right, 10, 260, 30, 30));
+   arrowsRight.push(new RightArrow(right, 10, 360, 30, 30));
 }
 
 
@@ -160,6 +198,30 @@ function Square(newColor, x, y){
       context.fillRect(x, y, 50,50);
    }
 }         
+
+function LeftArrow(image, x, y, xs, ys) {
+   var image = image;
+   var x = x;
+   var y = y;
+   var xs = xs;
+   var ys = ys;
+   
+   this.DrawImage = function() {
+      context.drawImage(image, x, y, xs, ys);
+   }
+}
+
+function RightArrow(image, x, y, xs, ys) {
+   var image = image;
+   var x = x;
+   var y = y;
+   var xs = xs;
+   var ys = ys;
+   
+   this.DrawImage = function() {
+      context.drawImage(image, x, y, xs, ys);
+   }
+}
 
 // Object to manage ladder images
 function Ladder(image, x, y, xs, ys) {
@@ -256,7 +318,8 @@ function Player(color, name)
    }
 }
    // Game loop update function
-function update(moves, player) {    
+function update(moves, player) {   
+
    for (var i = 0; i < moves; i++)
    {
       if (player.getX() == 25 && player.getReverse() == true)

@@ -17,6 +17,7 @@ function getSquare(games)
    {
       diceRoll = rollDice(i); 
       var player = players[i];
+      var output = document.getElementById(playerArray[i]);
       if (player.getStarted() == true) { 
          player.setSquareNum(diceRoll);
          if (player.getSquareNum() <= limit)
@@ -28,6 +29,7 @@ function getSquare(games)
             player.setSquareNum(-diceRoll);	
          }	
          player.setSquareNum(SnakeOrLadderTest(player));
+         output.innerHTML = player.returnName() + " you are on square " + player.getSquareNum();         
       }
       //Game finishes and and total rolls of the dice are returned for totals
       if (player.getSquareNum() == limit) {

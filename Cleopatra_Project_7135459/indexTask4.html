@@ -20,14 +20,17 @@ in a format to test playability of game and gather statistics.-->
 	<form name="form1">
 	<fieldset id="entryBox">
 		<h1>Cleopatra Project</h1>
-		<div id="alert"></div>
+		<div id="textWindows">
+      <p id="player1">Player 1:</p>
+      <p id="player2">Player 2:</p>
+      <p id="player3">Player 3:</p>
+      <p id="player4">Player 4:</p>
+      </div>
       <canvas id="canvas" >
       If you can read this your browser doesn't support the canvas function.
       </canvas>
 		<!--Button declared and created-->
 		<p id="start">
-         <img id="ladder" height="100" width="30" src="ladder.gif">
-         <img id="snake" height="100" width="30" src="snake.gif">
 			<input type="Reset" value="Reset Games" onclick="clearBoard()" />
          <input type="button" value="Roll Dice" onclick="getSquare()" />
 		</p>
