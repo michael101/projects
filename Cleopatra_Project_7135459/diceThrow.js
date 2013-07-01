@@ -16,7 +16,8 @@ function getSquare()
    var output = document.getElementById(playerArray[index]);
    
    diceRoll = rollDice(player);
-   if (player.getStarted() == true) { 
+   if (player.getStarted() == true) 
+   { 
       player.setSquareNum(diceRoll);
       if (player.getSquareNum() <= limit)
       {
@@ -30,24 +31,79 @@ function getSquare()
       output.innerHTML = player.returnName() + " you are on square " + player.getSquareNum();         
    }
    //Game finishes and and total rolls of the dice are returned for totals
-   if (player.getSquareNum() == limit) {
+   if (player.getSquareNum() == limit) 
+   {
       alert("Congratulations you win game " + player.returnName());
+      player.setGamesWon();
+      gamesPlayed++;
+      displayGamesLeader(players);
+      if (gamesPlayed == numberOfGames) 
+      {
+         displayGamesWinner(players);
+      }
    }
-   if (player.getStarted() == false) {
-      if (diceRoll == 6) {
+   if (player.getStarted() == false) 
+   {
+      if (diceRoll == 6) 
+      {
          player.setStarted(true);
          alert("On square " + player.getSquareNum());
          player.drawPlayer();
       }
    }
-   if (index >= numberOfPlayers -1) {
+   if (index >= numberOfPlayers -1) 
+   {
       index = 0;
-   } else {
+   } 
+   else 
+   {
       index++;
    }
 }
 
+function displayGamesLeader(players) 
+{
+   var highest = 0;
+   var output = document.getElementById("stats");
+   var player;
+   makeBoard();
+   for (var i = 0; i < players.length-1; i++)
+   {
+      players[i].resetX(25);
+      players[i].resetY(375);
+      players[i].resetSquareNum();
+      players[i].setStarted(false);
+      players[i].setReverse(false);
+      if (players[i].getGamesWon() > highest)
+      {
+         highest = players[i].getGamesWon();
+         player = players[i];
+      }
+   }
+   output.innerHTML = player.returnName() + " is winning on " + player.getGamesWon() + " games won!" ;
+}
 
+function displayGamesWinner(players) 
+{
+   var highest = 0;
+   var output = document.getElementById("stats");
+   var player;
+   makeBoard();
+   for (var i = 0; i < players.length; i++)
+   {
+      players[i].resetX(25);
+      players[i].resetY(375);
+      players[i].resetSquareNum();
+      players[i].setStarted(false);
+      players[i].setReverse(false);
+      if (players[i].getGamesWon() > highest)
+      {
+         highest = players[i].getGamesWon();
+         player = players[i];
+      }
+   }
+   output.innerHTML = player.returnName() + " won";
+}
 // Function to alert user of dice roll
 function rollDice(player)
 {

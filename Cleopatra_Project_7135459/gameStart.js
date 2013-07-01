@@ -10,10 +10,12 @@ in a format to test playability of game.
 // Global variable for board
 var playerArray = ["player1", "player2", "player3", "player4"];
 var index = 0;
+var numberOfGames = 0;
+var gamesPlayed = 1;
 var context;
 var canvas;
 var tempPlayers = [];
-var tempColors = ["red", "blue", "green", "black"];
+var tempColors = ["red", "blue", "green", "purple"];
 var numberOfPlayers = 0;
 var playerName = "";
 alert("This is a one to four player game vs a computer. \n" +
@@ -22,7 +24,7 @@ alert("This is a one to four player game vs a computer. \n" +
       "final square");
 var board = new Board();
 board.createBoard();
-initializeLists();
+board.initializeLists();
 board.fillSquares();
 
 // Board constuctor
@@ -33,6 +35,7 @@ function Board() {
    var snakes = [];
    var leftArrows = [];
    var rightArrows = [];
+   var customBoard = false;
    
    this.getSquares = function() {
       return squares;
@@ -52,6 +55,12 @@ function Board() {
    this.getRightArrows = function() {
       return rightArrows;
    }
+   this.getCustomBoard = function() {
+      return customBoard;
+   }
+   this.setCustomBoard = function(value) {
+      customBoard = value;
+   }
    // Get player numbers and names
    this.createBoard = function() {
       while (numberOfPlayers < 1 || numberOfPlayers > 4 || isNaN(numberOfPlayers) == true)
@@ -62,6 +71,10 @@ function Board() {
       {
          playerName = prompt("What is your name player "+ tempColors[i] + "?");
          tempPlayers.push(playerName);
+      }
+      while (numberOfGames != 1 && numberOfGames != 3 && numberOfGames != 5) 
+      {
+         numberOfGames = prompt("Best of how many games? (1, 3 or 5)?");
       }
    }
    // Set the color for each square
@@ -83,6 +96,40 @@ function Board() {
          }
          x = 0;
          y += 50;
+      }
+   }
+   this.initializeLists = function()
+   {
+      var left = new Image();
+      left.src = "left.gif";
+      var right = new Image();
+      right.src = "right.gif";
+      var players = board.getPlayers();
+      var arrowsLeft = board.getLeftArrows();
+      var arrowsRight = board.getRightArrows();
+      if (numberOfPlayers == 1) {
+         players.push(new Player("red", tempPlayers[0]));
+         players.push(new Player("blue", "Computer"));
+         numberOfPlayers = 2;
+      }
+      else {
+         for (var i = 0; i < numberOfPlayers; i++)
+         {
+            players.push(new Player(tempColors[i], tempPlayers[i]));
+         }
+      }
+      arrowsLeft.push(new Arrow(left, 460, 10, 30, 30));
+      arrowsLeft.push(new Arrow(left, 460, 110, 30, 30));
+      arrowsLeft.push(new Arrow(left, 460, 210, 30, 30));
+      arrowsLeft.push(new Arrow(left, 460, 310, 30, 30));
+      arrowsRight.push(new Arrow(right, 10, 60, 30, 30));
+      arrowsRight.push(new Arrow(right, 10, 160, 30, 30));
+      arrowsRight.push(new Arrow(right, 10, 260, 30, 30));
+      arrowsRight.push(new Arrow(right, 10, 360, 30, 30));
+      if (customBoard == false) {
+         defaultLists(); 
+      } else {
+         //customLists();
       }
    }
    // Create the board with squares.
@@ -119,7 +166,7 @@ function clearBoard() {
    tempPlayers = new Array();
    board = new Board();
    board.createBoard();
-   initializeLists();
+   board.initializeLists();
    board.fillSquares();
    board.fillBoard();
    for (var i = 0; i < playerArray.length; i++)
@@ -138,54 +185,25 @@ function makeBoard() {
    canvas.height = 400;
    //get a 2d context of the canvas
    context = canvas.getContext("2d");
-   initializeLists();
+   board.initializeLists();
    board.fillSquares();
    board.fillBoard();
 }
 
-// Hardcoded objects and adding player objects
-function initializeLists()
-{
+function defaultLists() {
    var ladder = new Image();
    ladder.src = "ladder.gif";
    var snake = new Image();
    snake.src = "snake.gif";
-   var left = new Image();
-   left.src = "left.gif";
-   var right = new Image();
-   right.src = "right.gif";
    var ladders = board.getLadders();
    var snakes = board.getSnakes();
-   var players = board.getPlayers();
-   var arrowsLeft = board.getLeftArrows();
-   var arrowsRight = board.getRightArrows();
-   if (numberOfPlayers == 1) {
-      players.push(new Player("red", tempPlayers[0]));
-      players.push(new Player("blue", "Computer"));
-      numberOfPlayers = 2;
-   }
-   else {
-      for (var i = 0; i < numberOfPlayers; i++)
-      {
-         players.push(new Player(tempColors[i], tempPlayers[i]));
-      }
-   }
    ladders.push(new Ladder(ladder, 60, 75, 30, 110));
    ladders.push(new Ladder(ladder, 160, 275, 30, 110));
    ladders.push(new Ladder(ladder, 410, 125, 30, 110));
    snakes.push(new Snake(snake, 260, 275, 30, 110));
    snakes.push(new Snake(snake, 310, 75, 30, 110));
    snakes.push(new Snake(snake, 160, 25, 30, 110));
-   arrowsLeft.push(new Arrow(left, 460, 10, 30, 30));
-   arrowsLeft.push(new Arrow(left, 460, 110, 30, 30));
-   arrowsLeft.push(new Arrow(left, 460, 210, 30, 30));
-   arrowsLeft.push(new Arrow(left, 460, 310, 30, 30));
-   arrowsRight.push(new Arrow(right, 10, 60, 30, 30));
-   arrowsRight.push(new Arrow(right, 10, 160, 30, 30));
-   arrowsRight.push(new Arrow(right, 10, 260, 30, 30));
-   arrowsRight.push(new Arrow(right, 10, 360, 30, 30));
 }
-
 
 // Object for creating squares on board
 function Square(newColor, x, y){
@@ -258,6 +276,7 @@ function Snake(image, x, y, xs, ys) {
 function Player(color, name) 
 {
    var name = name;
+   var gamesWon = 0;
    var x = 25;
    var y = 375;
    var radius = 20;
@@ -269,17 +288,29 @@ function Player(color, name)
    this.returnName = function() {
       return name;
    }
+   this.getGamesWon = function() {
+      return gamesWon;
+   }
+   this.setGamesWon = function() {
+      gamesWon++;
+   }
    this.getX = function() {
       return x;
    }   
    this.setX = function(value) {
       x += value;
    }
+   this.resetX = function(value) {
+      x = value;
+   }
    this.getY = function() {
       return y;
    }
    this.setY = function(value) {
       y += value;
+   }
+   this.resetY = function(value) {
+      y = value;
    }
    this.getStarted = function() {
       return started;
@@ -292,6 +323,9 @@ function Player(color, name)
    }
    this.setSquareNum = function(total) {
       diceTotal += total;
+   }
+   this.resetSquareNum = function() {
+      diceTotal = 1;
    }
    this.getReverse = function() {
       return reverse;
