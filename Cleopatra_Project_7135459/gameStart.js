@@ -9,6 +9,7 @@ in a format to test playability of game.
 
 // Global variable for board
 var playerArray = ["player1", "player2", "player3", "player4"];
+var index = 0;
 var context;
 var canvas;
 var tempPlayers = [];
@@ -86,11 +87,11 @@ function Board() {
    }
    // Create the board with squares.
    this.fillBoard = function() {
-      var index = 0;
+      var squareIndex = 0;
         
       for (var i = 0; i < 8; i++) {
          for (var j = 0; j < 10; j++) {
-            squares[index++].drawSquare();
+            squares[squareIndex++].drawSquare();
          }
       }
       for (var i = 0; i < ladders.length; i++)
@@ -175,14 +176,14 @@ function initializeLists()
    snakes.push(new Snake(snake, 260, 275, 30, 110));
    snakes.push(new Snake(snake, 310, 75, 30, 110));
    snakes.push(new Snake(snake, 160, 25, 30, 110));
-   arrowsLeft.push(new LeftArrow(left, 460, 10, 30, 30));
-   arrowsLeft.push(new LeftArrow(left, 460, 110, 30, 30));
-   arrowsLeft.push(new LeftArrow(left, 460, 210, 30, 30));
-   arrowsLeft.push(new LeftArrow(left, 460, 310, 30, 30));
-   arrowsRight.push(new RightArrow(right, 10, 60, 30, 30));
-   arrowsRight.push(new RightArrow(right, 10, 160, 30, 30));
-   arrowsRight.push(new RightArrow(right, 10, 260, 30, 30));
-   arrowsRight.push(new RightArrow(right, 10, 360, 30, 30));
+   arrowsLeft.push(new Arrow(left, 460, 10, 30, 30));
+   arrowsLeft.push(new Arrow(left, 460, 110, 30, 30));
+   arrowsLeft.push(new Arrow(left, 460, 210, 30, 30));
+   arrowsLeft.push(new Arrow(left, 460, 310, 30, 30));
+   arrowsRight.push(new Arrow(right, 10, 60, 30, 30));
+   arrowsRight.push(new Arrow(right, 10, 160, 30, 30));
+   arrowsRight.push(new Arrow(right, 10, 260, 30, 30));
+   arrowsRight.push(new Arrow(right, 10, 360, 30, 30));
 }
 
 
@@ -199,19 +200,7 @@ function Square(newColor, x, y){
    }
 }         
 
-function LeftArrow(image, x, y, xs, ys) {
-   var image = image;
-   var x = x;
-   var y = y;
-   var xs = xs;
-   var ys = ys;
-   
-   this.DrawImage = function() {
-      context.drawImage(image, x, y, xs, ys);
-   }
-}
-
-function RightArrow(image, x, y, xs, ys) {
+function Arrow(image, x, y, xs, ys) {
    var image = image;
    var x = x;
    var y = y;

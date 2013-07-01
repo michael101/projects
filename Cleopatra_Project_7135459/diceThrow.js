@@ -8,51 +8,52 @@ in a format to test playability of game.
 */
 
 // Function to control player movement called by roll dice button
-function getSquare(games)
+function getSquare()
 {
    var limit = 80;
    var players = board.getPlayers();
+   var player = players[index];
+   var output = document.getElementById(playerArray[index]);
    
-   for (var i = 0; i < numberOfPlayers; i++)
-   {
-      diceRoll = rollDice(i); 
-      var player = players[i];
-      var output = document.getElementById(playerArray[i]);
-      if (player.getStarted() == true) { 
-         player.setSquareNum(diceRoll);
-         if (player.getSquareNum() <= limit)
-         {
-            update(diceRoll, player);
-         }
-         if (player.getSquareNum() > limit)
-         {
-            player.setSquareNum(-diceRoll);	
-         }	
-         player.setSquareNum(SnakeOrLadderTest(player));
-         output.innerHTML = player.returnName() + " you are on square " + player.getSquareNum();         
+   diceRoll = rollDice(player);
+   if (player.getStarted() == true) { 
+      player.setSquareNum(diceRoll);
+      if (player.getSquareNum() <= limit)
+      {
+         update(diceRoll, player);
       }
-      //Game finishes and and total rolls of the dice are returned for totals
-      if (player.getSquareNum() == limit) {
-         alert("Congratulations you win game " + player.returnName());
-         break;
+      if (player.getSquareNum() > limit)
+      {
+         player.setSquareNum(-diceRoll);	
+      }	
+      player.setSquareNum(SnakeOrLadderTest(player));
+      output.innerHTML = player.returnName() + " you are on square " + player.getSquareNum();         
+   }
+   //Game finishes and and total rolls of the dice are returned for totals
+   if (player.getSquareNum() == limit) {
+      alert("Congratulations you win game " + player.returnName());
+   }
+   if (player.getStarted() == false) {
+      if (diceRoll == 6) {
+         player.setStarted(true);
+         alert("On square " + player.getSquareNum());
+         player.drawPlayer();
       }
-      if (player.getStarted() == false) {
-         if (diceRoll == 6) {
-            player.setStarted(true);
-            alert("On square " + player.getSquareNum());
-            player.drawPlayer();
-         }
-      }
-	}
+   }
+   if (index >= numberOfPlayers -1) {
+      index = 0;
+   } else {
+      index++;
+   }
 }
 
 
 // Function to alert user of dice roll
-function rollDice(index)
+function rollDice(player)
 {
    var players = board.getPlayers();
 	var diceRoll = (Math.floor(Math.random() * 6) + 1);
-	alert(players[index].returnName() + " rolled a " + diceRoll);
+	alert(player.returnName() + " rolled a " + diceRoll);
    return diceRoll;
 }
 
